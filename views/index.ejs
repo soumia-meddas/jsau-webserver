@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JSAU Webserver</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header>
+        <h1>Bienvenue sur JSAU Webserver</h1>
+    </header>
+
+    <main>
+        <!-- Rechercher un fichier -->
+        <section>
+            <h2>Rechercher un fichier HTML</h2>
+            <form action="/search" method="GET">
+                <label for="search">Nom du fichier HTML :</label>
+                <input type="text" id="search" name="text" placeholder="Nom du fichier" required>
+                <button type="submit">Rechercher</button>
+            </form>
+        </section>
+        <section>
+            <h2>Télécharger un fichier</h2>
+            <form action="" method="GET" onsubmit="this.action='/documents/' + encodeURIComponent(this.filename.value)">
+                <label for="download">Nom du fichier HTML :</label>
+                <input type="text" id="download" name="filename" placeholder="example.html" required>
+                <button type="submit">Télécharger</button>
+            </form>
+        </section>
+        
+        <section>
+            <h2>Ajouter un favori</h2>
+            <form action="/favorites" method="POST">
+                <label for="filename">Nom du fichier HTML (avec extension) :</label>
+                <input type="text" id="filename" name="filename" placeholder="example.html" required>
+                <button type="submit">Ajouter</button>
+            </form>
+        </section>
+
+        <!-- Liste des fichiers favoris -->
+        <section>
+            <h2>Fichiers favoris</h2>
+            <% if (favorites && favorites.length > 0) { %>
+                <div>
+                    <% favorites.forEach(fav => { %>
+                        <form action="/favorites/<%= fav.id %>" method="POST" style="display: inline;">
+                            <button type="submit" class="favorite-btn"><%= fav.filename %></button>
+                            <input type="hidden" name="_method" value="DELETE">
+                            <button type="submit" class="delete-btn">Supprimer</button>
+                        </form>
+                    <% }) %>
+                </div>
+            <% } else { %>
+                <p>Aucun fichier favori ajouté.</p>
+            <% } %>
+        </section>
+
+        <!-- Navigation -->
+        <nav>
+            <h2>Navigation</h2>
+            <ul>
+                <li><a href="/info">Voir les informations sur l'application</a></li>
+            </ul>
+        </nav>
+    </main>
+
+    <footer>
+        <p>© 2024 JSAU Webserver</p>
+    </footer>
+    <script src="js/script.js"></script>
+</body>
+</html>
